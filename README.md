@@ -29,8 +29,8 @@ ChainCollection.valueOf(
 
     return personList;
 }).sort((p1, p2) -> p2.age - p1.age)
-        .collect()
-        .forEach(System.out::println);
+  .collect()
+  .forEach(System.out::println);
 ```
 
 ## 惰性链式容器示例
@@ -42,9 +42,10 @@ LazyChainCollection.valueOf(
         "xiaoli,a2x7,chengdu",
         "ZHANGSAN,16,guangzhou",
         "hanhan,19,chongqing",
-        "LISI,23,changsha"
+        "LISI,23,changsha",
+        "lisi,29,shanghai"
 ).map(line -> line.toLowerCase())
-//        .filter(line -> !line.startsWith("xiao"))
+.filter(line -> !line.startsWith("xiao"))
 .flatMap(line -> {
     List<Person> personList = new ArrayList<>();
 
@@ -60,12 +61,14 @@ LazyChainCollection.valueOf(
         }
     } catch (NumberFormatException e) {
         // int 解析异常，不要该数据，直接忽略
-//                e.printStackTrace();
+        // e.printStackTrace();
     }
 
     return personList;
-}).sort((p1, p2) -> p2.age - p1.age)
-  .map(p -> p)
-  .collect().forEach(System.out::println);
+})
+.sort((p1, p2) -> p2.age - p1.age)
+.map(p -> p.name.toUpperCase())
+.distinct()
+.collect().forEach(System.out::println);
 //          .foreach(System.out::println);
 ```
