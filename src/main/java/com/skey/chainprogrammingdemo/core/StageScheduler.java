@@ -1,7 +1,7 @@
 package com.skey.chainprogrammingdemo.core;
 
 import com.skey.chainprogrammingdemo.node.*;
-import com.skey.chainprogrammingdemo.stage.MapShuffleStage;
+import com.skey.chainprogrammingdemo.stage.ShuffleMapStage;
 import com.skey.chainprogrammingdemo.stage.ResultStage;
 import com.skey.chainprogrammingdemo.stage.Stage;
 
@@ -44,9 +44,9 @@ public class StageScheduler<T> {
 
         for (Stage<?> stage : stages) {
             System.out.println("---> Start Stage[" + stage + "]");
-            if (stage instanceof MapShuffleStage) {
+            if (stage instanceof ShuffleMapStage) {
                 // 处理 MapShuffleStage
-                handleStageToStage(data, (MapShuffleStage<?>) stage);
+                handleStageToStage(data, (ShuffleMapStage<?>) stage);
             } else if (stage instanceof ResultStage) {
                 // 处理 ResultStage
                 handleStage(data, stage);
@@ -77,7 +77,7 @@ public class StageScheduler<T> {
 
         // 找到第一个Node，构建第一个Stage
         Node<?> current = findFirstNode(node).next; // 不要起始node，因为LazyChainCollection创建时，该node是空的
-        stages.add(new MapShuffleStage<>(current)); // 添加第一个Node到stages中
+        stages.add(new ShuffleMapStage<>(current)); // 添加第一个Node到stages中
 
         while (current != null) {
             Node<?> next = current.next;
@@ -88,7 +88,7 @@ public class StageScheduler<T> {
                 next.pre = null; // 后一个Node向前指向null
 
                 // 新起一个Stage
-                stages.add(new MapShuffleStage<>(next));
+                stages.add(new ShuffleMapStage<>(next));
             } else if (current instanceof ConsumerNode) {
                 // 如果找到ConsumerNode，更新最后的Stage为ResultStage
                 Node<?> stageFirstNode = findFirstNode(current);
@@ -136,7 +136,7 @@ public class StageScheduler<T> {
      * @param data  数据容器
      * @param stage 当前Stage
      */
-    private <In> void handleStageToStage(Collection<In> data, MapShuffleStage<?> stage) {
+    private <In> void handleStageToStage(Collection<In> data, ShuffleMapStage<?> stage) {
         Node<?> lastNode = findLastNode(stage.node);
         if (lastNode instanceof SortNode) {
             SortNode<In> sortNode = (SortNode<In>) lastNode;

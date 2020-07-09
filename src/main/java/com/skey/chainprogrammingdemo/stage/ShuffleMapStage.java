@@ -9,12 +9,10 @@ import com.skey.chainprogrammingdemo.node.Node;
  *
  * @author ALion
  */
-public class MapShuffleStage<T> extends Stage<T> {
+public class ShuffleMapStage<T> extends Stage<T> {
 
-    public MapShuffleStage(Node<T> node) {
+    public ShuffleMapStage(Node<T> node) {
         super(node);
     }
-
-
 
 }

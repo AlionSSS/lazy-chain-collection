@@ -15,5 +15,4 @@ public class ResultStage<T> extends Stage<T> {
         super(node);
     }
 
-
 }
